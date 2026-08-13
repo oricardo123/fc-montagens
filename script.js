@@ -66,6 +66,7 @@
   }
 
   const filters = document.querySelectorAll('[data-filter]');
+  const projectGrid = document.querySelector('[data-project-grid]');
   const projects = document.querySelectorAll('[data-category]');
   filters.forEach((filter) => {
     filter.addEventListener('click', () => {
@@ -75,6 +76,8 @@
         const categories = project.dataset.category?.split(' ') || [];
         project.classList.toggle('is-hidden', category !== 'all' && !categories.includes(category));
       });
+      const visibleCount = [...projects].filter((project) => !project.classList.contains('is-hidden')).length;
+      projectGrid?.setAttribute('data-visible-count', String(visibleCount));
     });
   });
 
@@ -120,19 +123,20 @@
     }
 
     const data = new FormData(contactForm);
-    const subject = `Pedido de contacto — ${data.get('service')}`;
-    const bodyText = [
-      `Nome: ${data.get('name')}`,
-      `Empresa: ${data.get('company') || '—'}`,
-      `E-mail: ${data.get('email')}`,
-      `Assunto: ${data.get('service')}`,
-      '',
-      'Mensagem:',
-      data.get('message')
-    ].join('\n');
-    const mailto = `mailto:geral@fcmontagens.pt?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+    const cleanLine = (value) => String(value || '').replace(/[\r\n]+/g, ' ').trim();
+    const lineBreaks = (value) => String(value || '').replace(/\r?\n/g, '\r\n').trim();
+    const company = cleanLine(data.get('company'));
+    const subject = cleanLine(`Pedido de contacto — ${data.get('service')}`);
+    const signature = [cleanLine(data.get('name')), company].filter(Boolean).join('\r\n');
+    const bodyText = ['Olá,', '', lineBreaks(data.get('message')), '', 'Cumprimentos,', signature].join('\r\n');
+    const params = new URLSearchParams({
+      cc: cleanLine(data.get('email')),
+      subject,
+      body: bodyText
+    });
+    const mailto = `mailto:geral@fcmontagens.pt?${params.toString()}`;
     showToast('A abrir o seu programa de e-mail…');
-    window.setTimeout(() => { window.location.href = mailto; }, 250);
+    window.location.href = mailto;
   });
 
   contactForm?.querySelectorAll('input, select, textarea').forEach((field) => {
