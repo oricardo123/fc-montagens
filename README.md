@@ -1,19 +1,23 @@
-# FC Montagens — proposta de website
+# FC Montagens
 
-Esta é uma landing page estática, responsiva e pronta a abrir num navegador.
+Website estático em português para apresentação dos serviços, trabalhos e contactos da FC Montagens.
 
-## Abrir localmente
+## Conteúdo
 
-Abra `index.html` no navegador. Não é necessária instalação nem servidor.
+- Estrutura e identidade da proposta original: abertura fotográfica, tons escuros e vermelhos, cartões de serviços e secções Empresa, Projetos e Contactos.
+- Fotografias reais publicadas pela FC Montagens; os títulos descrevem as imagens sem atribuir clientes ou resultados não confirmados.
+- Vídeo vertical na secção Empresa, com controlos, imagem de apresentação e reprodução iniciada pelo visitante. O ficheiro mantém a montagem e o áudio fornecidos.
+- Formulário que prepara uma mensagem no programa de e-mail do visitante. Não envia mensagens pelo website nem apresenta o pedido como entregue.
 
-## Conteúdo e contactos usados
+Informações institucionais verificadas em [fcmontagens.com](https://www.fcmontagens.com/), [Sobre nós](https://www.fcmontagens.com/sobre-nos) e [Contactos](https://www.fcmontagens.com/contacte-nos).
 
-- Serviços, contactos, morada e enquadramento da empresa foram confirmados no site atual da FC Montagens.
-- As fotografias e os logótipos apontam para ativos já publicados no site da marca. As versões usadas no cabeçalho e rodapé foram recortadas e otimizadas em `assets/`.
-- O formulário valida os campos e abre o programa de e-mail do visitante com `geral@fcmontagens.pt` como destinatário, o serviço no assunto e uma cópia no e-mail indicado. Um formulário com resposta automática requer, futuramente, a ligação a um serviço de formulários ou CRM.
+## Utilização
 
-## Ficheiros
+Abra `index.html` num navegador ou sirva a pasta com um servidor HTTP estático. Não requer instalação de dependências nem compilação.
 
-- `index.html` — estrutura e conteúdo da página
-- `styles.css` — design responsivo e animações
-- `script.js` — menu móvel, filtros, modal de projetos, formulário e feedback visual
+- `index.html`: estrutura e conteúdo.
+- `styles.css`: identidade visual, apresentação responsiva e acessibilidade.
+- `script.js`: navegação, filtros, visualização de imagens, reprodução do vídeo e preparação do e-mail.
+- `assets/`: logótipos, fotografias otimizadas, vídeo e imagem de apresentação.
+
+As fotografias, a marca e o vídeo pertencem aos respetivos titulares. A publicação deste repositório não concede uma licença de reutilização desses conteúdos.
