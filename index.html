@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=20260910-2">
   </head>
   <body>
     <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -23,9 +23,6 @@
       <symbol id="icon-close" viewBox="0 0 16 16"><path d="m3 3 10 10M13 3 3 13"/></symbol>
     </svg>
     <a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
-    <div class="cursor-glow" aria-hidden="true"></div>
-    <div class="site-noise" aria-hidden="true"></div>
-    <div class="progress-bar" aria-hidden="true"><span></span></div>
 
     <header class="site-header" data-header>
       <a class="brand" href="#inicio" aria-label="FC Montagens — início">
@@ -56,34 +53,24 @@
           <img src="assets/soldadura-fc-1920.webp" alt="" srcset="assets/soldadura-fc-640.webp 640w, assets/soldadura-fc-1280.webp 1280w, assets/soldadura-fc-1920.webp 1920w" sizes="100vw" width="1920" height="1080" fetchpriority="high">
         </div>
         <div class="hero__veil" aria-hidden="true"></div>
-        <div class="hero__grid" aria-hidden="true"></div>
         <div class="section-shell hero__content">
-          <div class="hero__eyebrow reveal">
-            <span class="eyebrow-dot"></span>
-            <span>Indústria / Portugal · Europa</span>
-          </div>
           <h1 id="hero-title" class="hero__title hero__title--statement">
             <span class="reveal" style="--delay: .08s">Fabricação e montagem.</span>
             <span class="hero__title-accent reveal" style="--delay: .16s">Manutenção industrial.</span>
           </h1>
           <div class="hero__bottom reveal" style="--delay: .24s">
-            <p>Fabricação, montagem e manutenção industrial em Portugal e na Europa.</p>
+            <p>Tubagens, caldeiraria, serralharia e soldadura em Portugal e na Europa.</p>
             <div class="hero__actions">
-              <a class="button button--solid" href="#contactos">Fale com a nossa equipa <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
-              <a class="text-link text-link--light" href="#servicos">Conheça os serviços <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-down"></use></svg></a>
+              <a class="button button--solid" href="#contactos">Pedir orçamento <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
+              <a class="text-link text-link--light" href="#servicos">Ver serviços <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-down"></use></svg></a>
             </div>
           </div>
         </div>
-        <div class="hero__meta">
-          <div><span class="meta-number">2018</span><span class="meta-label">Fundada</span></div>
-          <div><span class="meta-number">03</span><span class="meta-label">Áreas de atuação</span></div>
-          <div><span class="meta-number">EU</span><span class="meta-label">Atuação na Europa</span></div>
-        </div>
-        <a class="hero__scroll" href="#servicos" aria-label="Descer até aos serviços"><span>Scroll</span><i></i></a>
+        <p class="hero__meta">Est. 2018</p>
       </section>
 
       <section class="intro section-shell section-space" aria-labelledby="intro-title">
-        <div class="section-kicker reveal"><span>01</span><span>FC Montagens</span></div>
+        <div class="section-kicker reveal">FC Montagens</div>
         <div class="intro__layout">
           <h2 id="intro-title" class="display-title reveal">Da fabricação<br><span>à manutenção.</span></h2>
           <div class="intro__copy reveal" style="--delay: .1s">
@@ -92,20 +79,14 @@
             <a class="text-link" href="#empresa">Conhecer a empresa <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
           </div>
         </div>
-        <div class="capabilities reveal" style="--delay: .16s">
-          <div class="capability"><span>01</span><strong>Trabalho especializado</strong><p>Tubagens, caldeiraria, serralharia e soldadura.</p></div>
-          <div class="capability"><span>02</span><strong>Intervenção no terreno</strong><p>Paragens programadas e situações de emergência.</p></div>
-          <div class="capability"><span>03</span><strong>Manutenção industrial</strong><p>Equipamentos mecânicos e elétricos.</p></div>
-        </div>
       </section>
 
       <section class="services" id="servicos" aria-labelledby="services-title">
         <div class="section-shell">
           <div class="section-heading">
-            <div class="section-kicker section-kicker--light reveal"><span>02</span><span>O que fazemos</span></div>
+            <div class="section-kicker section-kicker--light reveal">Serviços</div>
             <div class="section-heading__row">
               <h2 id="services-title" class="display-title display-title--light reveal">Serviços para<br><span>a indústria.</span></h2>
-              <p class="reveal" style="--delay: .1s">Da fabricação à manutenção, três áreas de serviço para a indústria.</p>
             </div>
           </div>
 
@@ -114,8 +95,6 @@
               <div class="service-card__image"><img src="assets/tubagem-em-obra-1280.webp" alt="Instalação de tubagem industrial da FC Montagens" srcset="assets/tubagem-em-obra-640.webp 640w, assets/tubagem-em-obra-1280.webp 1280w" sizes="(max-width: 560px) 100vw, 50vw" width="1920" height="2560" loading="lazy" decoding="async"></div>
               <div class="service-card__overlay"></div>
               <div class="service-card__body">
-                <span class="service-card__number">01</span>
-                <div class="service-card__icon" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M6 29 29 6M10 6h19v19M6 10v19h19"/></svg></div>
                 <h3>Fabricações<br>&amp; montagens</h3>
                 <p>Tubagens, caldeiraria, serralharia e soldadura especializada.</p>
                 <a href="#contactos" aria-label="Pedir orçamento para fabricações e montagens">Pedir orçamento <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
@@ -126,8 +105,6 @@
               <div class="service-card__image"><img src="assets/instalacao-industrial-1280.webp" alt="Tubagens e equipamentos numa instalação industrial" srcset="assets/instalacao-industrial-640.webp 640w, assets/instalacao-industrial-1280.webp 1280w" sizes="(max-width: 560px) 100vw, 50vw" width="1920" height="4266" loading="lazy" decoding="async"></div>
               <div class="service-card__overlay"></div>
               <div class="service-card__body">
-                <span class="service-card__number">02</span>
-                <div class="service-card__icon" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M9 24 24 9M7 15l-2 2 12 12 2-2M19 5l12 12-2 2L17 7z"/></svg></div>
                 <h3>Manutenção<br>industrial</h3>
                 <p>Manutenção mecânica e elétrica de equipamentos industriais.</p>
                 <a href="#contactos" aria-label="Pedir orçamento para manutenção industrial">Pedir orçamento <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
@@ -138,8 +115,6 @@
               <div class="service-card__image"><img src="assets/equipa-no-terreno-1280.webp" alt="Profissional FC Montagens junto a depósitos e tubagem" srcset="assets/equipa-no-terreno-640.webp 640w, assets/equipa-no-terreno-1280.webp 1280w" sizes="(max-width: 560px) 100vw, 50vw" width="1824" height="1368" loading="lazy" decoding="async"></div>
               <div class="service-card__overlay"></div>
               <div class="service-card__body">
-                <span class="service-card__number">03</span>
-                <div class="service-card__icon" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M18 5v26M5 18h26M9 9l18 18M27 9 9 27"/></svg></div>
                 <h3>Intervenções<br>industriais</h3>
                 <p>Reparações e modificações, em paragens programadas ou situações de emergência.</p>
                 <a href="#contactos" aria-label="Pedir orçamento para intervenções industriais">Pedir orçamento <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
@@ -147,23 +122,17 @@
             </article>
           </div>
         </div>
-        <div class="marquee" aria-hidden="true"><div><span>Rigor</span><i class="marquee-mark"></i><span>Segurança</span><i class="marquee-mark"></i><span>Experiência</span><i class="marquee-mark"></i><span>Precisão</span><i class="marquee-mark"></i><span>Rigor</span><i class="marquee-mark"></i><span>Segurança</span><i class="marquee-mark"></i><span>Experiência</span><i class="marquee-mark"></i><span>Precisão</span><i class="marquee-mark"></i></div></div>
       </section>
 
       <section class="company section-space" id="empresa" aria-labelledby="company-title">
         <div class="section-shell company__layout">
           <div class="company__content">
-            <div class="section-kicker reveal"><span>03</span><span>A nossa empresa</span></div>
+            <div class="section-kicker reveal">Empresa</div>
             <h2 id="company-title" class="display-title reveal">A equipa<br><span>no terreno.</span></h2>
             <p class="lead reveal" style="--delay: .08s">Somos uma empresa de montagem e manutenção industrial, fundada em 2018 e sediada em Matosinhos.</p>
-            <p class="reveal" style="--delay: .12s">Prestamos serviços em Portugal, Espanha, França e Itália. Conheça a nossa equipa e o seu trabalho neste vídeo.</p>
+            <p class="reveal" style="--delay: .12s">Prestamos serviços em Portugal, Espanha, França e Itália.</p>
             <button class="text-link film-action" type="button" data-film-action aria-controls="company-film" hidden>Ver vídeo <span aria-hidden="true">▶</span></button>
             <p class="film-status" data-film-status role="status" aria-live="polite"></p>
-            <dl class="company__facts reveal" style="--delay: .16s">
-              <div><dt>Base</dt><dd>Matosinhos, Portugal</dd></div>
-              <div><dt>Atuação</dt><dd>Portugal e Europa</dd></div>
-              <div><dt>Foco</dt><dd>Montagem e manutenção industrial</dd></div>
-            </dl>
           </div>
           <figure class="company__film reveal">
             <video id="company-film" controls playsinline preload="none" width="720" height="1280" poster="assets/fc-montagens-poster.jpg" aria-label="Vídeo da equipa FC Montagens" aria-describedby="film-caption">
@@ -179,10 +148,9 @@
         <div class="section-shell">
           <div class="section-heading projects__heading">
             <div>
-              <div class="section-kicker reveal"><span>04</span><span>Projetos selecionados</span></div>
+              <div class="section-kicker reveal">Projetos</div>
               <h2 id="projects-title" class="display-title reveal">Alguns dos<br><span>nossos trabalhos.</span></h2>
             </div>
-            <p class="reveal" style="--delay: .1s">Tubagens, equipamentos e soldadura: imagens do nosso trabalho.</p>
           </div>
 
           <div class="project-filters reveal" style="--delay: .12s" role="group" aria-label="Filtrar projetos">
@@ -196,28 +164,25 @@
             <button class="project project--large reveal" type="button" data-category="tubagem" data-title="Tubagem industrial" data-type="Tubagens" data-copy="Instalação de tubagem num espaço industrial.">
               <img src="assets/tubagem-industrial-1280.webp" srcset="assets/tubagem-industrial-640.webp 640w, assets/tubagem-industrial-1280.webp 1280w" sizes="(max-width: 880px) 100vw, 65vw" width="1824" height="1368" loading="lazy" decoding="async" alt="Instalação de tubagem num espaço industrial.">
               <span class="project__shade"></span>
-              <span class="project__meta"><small>01 / Tubagens</small><strong>Tubagem<br>industrial</strong><i>Ver imagem <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></i></span>
+              <span class="project__meta"><strong>Tubagem<br>industrial</strong><i>Ver imagem <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></i></span>
             </button>
             <button class="project project--tall reveal" type="button" data-category="equipamento" data-title="Equipamento industrial" data-type="Equipamentos" data-copy="Conjunto de equipamentos e tubagens numa instalação industrial.">
               <img src="assets/equipamento-industrial-1280.webp" srcset="assets/equipamento-industrial-640.webp 640w, assets/equipamento-industrial-1280.webp 1280w" sizes="(max-width: 880px) 100vw, 65vw" width="1824" height="1368" loading="lazy" decoding="async" alt="Conjunto de equipamentos e tubagens numa instalação industrial.">
               <span class="project__shade"></span>
-              <span class="project__meta"><small>02 / Equipamentos</small><strong>Equipamento<br>industrial</strong><i>Ver imagem <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></i></span>
+              <span class="project__meta"><strong>Equipamento<br>industrial</strong><i>Ver imagem <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></i></span>
             </button>
             <button class="project project--wide reveal" type="button" data-category="soldadura" data-title="Soldadura em tubagem" data-type="Soldadura" data-copy="Detalhe de uma união soldada em tubagem.">
               <img src="assets/soldadura-detalhe-1280.webp" srcset="assets/soldadura-detalhe-640.webp 640w, assets/soldadura-detalhe-1280.webp 1280w" sizes="(max-width: 880px) 100vw, 65vw" width="1920" height="2560" loading="lazy" decoding="async" alt="Detalhe de uma união soldada em tubagem.">
               <span class="project__shade"></span>
-              <span class="project__meta"><small>03 / Soldadura</small><strong>Soldadura<br>em tubagem</strong><i>Ver imagem <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></i></span>
+              <span class="project__meta"><strong>Soldadura<br>em tubagem</strong><i>Ver imagem <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></i></span>
             </button>
           </div>
-          <p class="projects__note reveal">Clique numa imagem para a ver em detalhe.</p>
         </div>
       </section>
 
       <section class="cta-band" aria-labelledby="cta-title">
-        <div class="cta-band__line" aria-hidden="true"></div>
         <div class="section-shell cta-band__inner reveal">
-          <p class="eyebrow">Tem um trabalho para a nossa equipa?</p>
-          <h2 id="cta-title">Vamos falar do<br><em>seu projeto.</em></h2>
+          <h2 id="cta-title">Precisa de montagem<br><em>ou manutenção?</em></h2>
           <a class="button button--solid button--light" href="#contactos">Pedir orçamento <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
         </div>
       </section>
@@ -225,8 +190,8 @@
       <section class="contact section-space" id="contactos" aria-labelledby="contact-title">
         <div class="section-shell contact__layout">
           <div class="contact__details">
-            <div class="section-kicker reveal"><span>05</span><span>Contactos</span></div>
-            <h2 id="contact-title" class="display-title reveal">Conte-nos<br><span>o que precisa.</span></h2>
+            <div class="section-kicker reveal">Contactos</div>
+            <h2 id="contact-title" class="display-title reveal">Peça um<br><span>orçamento.</span></h2>
             <p class="lead reveal" style="--delay: .08s">Descreva o trabalho, o local e as datas previstas. Pode juntar desenhos ou fotografias ao e-mail.</p>
             <div class="contact-list reveal" style="--delay: .14s">
               <div class="contact-list__item"><span>Geral</span><a href="mailto:geral@fcmontagens.pt">geral@fcmontagens.pt</a></div>
@@ -243,7 +208,7 @@
             <div class="form-field"><label for="company">Empresa</label><input id="company" name="company" autocomplete="organization" placeholder="Nome da empresa" maxlength="160"></div>
             <div class="form-field"><label for="email">E-mail <b>*</b></label><input id="email" name="email" type="email" autocomplete="email" required placeholder="nome@empresa.pt" maxlength="180"></div>
             <div class="form-field"><label for="service">Assunto <b>*</b></label><select id="service" name="service" required><option value="" selected disabled>Selecione uma opção</option><option>Fabricações & montagens</option><option>Manutenção industrial</option><option>Intervenções industriais</option><option>Outro assunto</option></select></div>
-            <div class="form-field form-field--full"><label for="message">Como podemos ajudar? <b>*</b></label><textarea id="message" name="message" required rows="4" maxlength="2400" placeholder="Descreva-nos brevemente o seu projeto ou necessidade."></textarea></div>
+            <div class="form-field form-field--full"><label for="message">Descrição do trabalho <b>*</b></label><textarea id="message" name="message" required rows="4" maxlength="2400" placeholder="Trabalho a realizar, local e datas previstas."></textarea></div>
             <div class="form-submit"><p>O pedido abre no seu programa de e-mail. Pode rever o texto e anexar ficheiros antes de enviar.</p><button class="button button--solid" type="submit" disabled>Preparar e-mail <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></button></div>
             <p class="form-status" data-form-status role="status" aria-live="polite"></p>
             <noscript><p>Peça orçamento por e-mail: <a href="mailto:geral@fcmontagens.pt">geral@fcmontagens.pt</a>.</p></noscript>
@@ -258,7 +223,7 @@
         <div class="site-footer__links"><a href="#servicos">Serviços</a><a href="#empresa">Empresa</a><a href="#projetos">Projetos</a><a href="#contactos">Contactos</a></div>
         <a class="instagram-link" href="https://www.instagram.com/fc_montagens.pt/" target="_blank" rel="noreferrer">Instagram <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
       </div>
-      <div class="section-shell site-footer__bottom"><span>© <span data-year>2026</span> FC Montagens. Todos os direitos reservados.</span><span>Fabricação · Montagem · Manutenção</span></div>
+      <div class="section-shell site-footer__bottom"><span>© <span data-year>2026</span> FC Montagens. Todos os direitos reservados.</span></div>
     </footer>
 
     <a class="back-to-top" href="#inicio" aria-label="Voltar ao topo" data-back-to-top><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-arrow-up"></use></svg></a>
@@ -273,6 +238,6 @@
     </dialog>
     <div class="toast" role="status" aria-live="polite" data-toast></div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=20260910-2"></script>
   </body>
 </html>

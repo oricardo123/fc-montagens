@@ -4,7 +4,6 @@
   const header = document.querySelector('[data-header]');
   const menuToggle = document.querySelector('[data-menu-toggle]');
   const nav = document.querySelector('[data-nav]');
-  const progress = document.querySelector('.progress-bar span');
   const backToTop = document.querySelector('[data-back-to-top]');
   const year = document.querySelector('[data-year]');
   const toast = document.querySelector('[data-toast]');
@@ -77,9 +76,6 @@
   });
 
   const updateScrollUi = () => {
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    const amount = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
-    if (progress) progress.style.width = `${amount}%`;
     header?.classList.toggle('is-scrolled', window.scrollY > 28);
     backToTop?.classList.toggle('is-visible', window.scrollY > 700);
     if (backToTop) backToTop.tabIndex = window.scrollY > 700 ? 0 : -1;
@@ -99,15 +95,6 @@
     revealItems.forEach((item) => revealObserver.observe(item));
   } else {
     revealItems.forEach((item) => item.classList.add('is-visible'));
-  }
-
-  const glow = document.querySelector('.cursor-glow');
-  if (glow && window.matchMedia('(pointer: fine)').matches) {
-    window.addEventListener('pointermove', (event) => {
-      glow.style.left = `${event.clientX}px`;
-      glow.style.top = `${event.clientY}px`;
-      glow.classList.add('is-visible');
-    }, { passive: true });
   }
 
   const filters = document.querySelectorAll('[data-filter]');
