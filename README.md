@@ -1,23 +1,23 @@
-# FC Montagens
+# FC Montagens website
 
-Website estático em português para apresentação dos serviços, trabalhos e contactos da FC Montagens.
+Static HTML, CSS and JavaScript. Live demonstration: https://oricardo123.github.io/fc-montagens/
 
-## Conteúdo
+Pages: home, industrial pipework, and Focus platform. Portuguese at the root; equivalent English, Spanish and French pages in `en/`, `es/` and `fr/`. No build step or content management system is needed to serve the site.
 
-- Estrutura e identidade da proposta original: abertura fotográfica, tons escuros e vermelhos, cartões de serviços e secções Empresa, Projetos e Contactos.
-- Fotografias reais publicadas pela FC Montagens; os títulos descrevem as imagens sem atribuir clientes ou resultados não confirmados.
-- Vídeo vertical na secção Empresa, com controlos, imagem de apresentação e reprodução iniciada pelo visitante. O ficheiro mantém a montagem e o áudio fornecidos.
-- Formulário que prepara uma mensagem no programa de e-mail do visitante. Não envia mensagens pelo website nem apresenta o pedido como entregue.
+Run `python3 -m http.server 8765` in this folder for a basic preview. A server supporting HTTP Range requests is recommended for video seeking.
 
-Informações institucionais verificadas em [fcmontagens.com](https://www.fcmontagens.com/), [Sobre nós](https://www.fcmontagens.com/sobre-nos) e [Contactos](https://www.fcmontagens.com/contacte-nos).
+## Contact form
 
-## Utilização
+`config.js` intentionally has an empty Formspree endpoint. Visitors see a demonstration notice; validation does not send a request. Email and telephone links remain available.
 
-Abra `index.html` num navegador ou sirva a pasta com um servidor HTTP estático. Não requer instalação de dependências nem compilação.
+Activation requires a Formspree form owned by FC Montagens, with its verified recipient. Set `formspreeEndpoint` to the activated `https://formspree.io/f/…` endpoint, check the provider settings for the final domain, and perform an authorized real email receipt test. No private key belongs in this repository. The current Free plan starts at 50 submissions/month; confirm the allowance at activation: https://help.formspree.io/articles/account-management/account-limits
 
-- `index.html`: estrutura e conteúdo.
-- `styles.css`: identidade visual, apresentação responsiva e acessibilidade.
-- `script.js`: navegação, filtros, visualização de imagens, reprodução do vídeo e preparação do e-mail.
-- `assets/`: logótipos, fotografias otimizadas, vídeo e imagem de apresentação.
+`form.mjs` handles local validation, service responses, network failure and timeout. Server acceptance is distinguished from email delivery.
 
-As fotografias, a marca e o vídeo pertencem aos respetivos titulares. A publicação deste repositório não concede uma licença de reutilização desses conteúdos.
+## Media
+
+The background has silent 55.96-second desktop/mobile encodes. Reduced motion, data saving and autoplay failure retain the poster. Playback has a pause control. Case films have native controls without autoplay and preserve their full aspect ratio. The original Focus film is retained unchanged. No camera originals or private project records are included.
+
+## Publication
+
+Publish this repository to its existing GitHub Pages destination. Moving to the company domain requires the owner's DNS/domain access; this demonstration does not alter `fcmontagens.com`.

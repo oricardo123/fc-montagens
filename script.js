@@ -1,189 +1,75 @@
-(() => {
-  document.documentElement.classList.add('js');
-  const body = document.body;
-  const header = document.querySelector('[data-header]');
-  const menuToggle = document.querySelector('[data-menu-toggle]');
-  const nav = document.querySelector('[data-nav]');
-  const backToTop = document.querySelector('[data-back-to-top]');
-  const year = document.querySelector('[data-year]');
-  const toast = document.querySelector('[data-toast]');
-  let toastTimer;
-
-  if (year) year.textContent = new Date().getFullYear();
-
-  const film = document.querySelector('#company-film');
-  const filmAction = document.querySelector('[data-film-action]');
-  const filmStatus = document.querySelector('[data-film-status]');
-  filmAction.hidden = false;
-  const updateFilmAction = () => {
-    filmAction.textContent = film.ended ? 'Ver vídeo novamente ▶' : film.paused ? 'Ver vídeo ▶' : 'Pausar vídeo Ⅱ';
-  };
-  ['play', 'pause', 'ended'].forEach(event => film.addEventListener(event, updateFilmAction));
-  filmAction.addEventListener('click', async () => {
-    filmStatus.textContent = '';
-    if (!film.paused) { film.pause(); return; }
-    if (film.ended) film.currentTime = 0;
-    try {
-      await film.play();
-      film.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' });
-    } catch {
-      filmStatus.textContent = 'Não foi possível iniciar o vídeo. Tente novamente nos controlos do leitor.';
-    }
+import { isEndpoint, validate, submitRequest } from './form.mjs';
+document.documentElement.classList.add('js');
+const strings = JSON.parse(document.querySelector('#page-strings').textContent);
+const $ = selector => document.querySelector(selector);
+const $$ = selector => [...document.querySelectorAll(selector)];
+$$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
+$$('[data-language]').forEach(link => link.addEventListener('click', () => { link.hash = location.hash; }));
+const menu = $('.menu-toggle'), nav = $('#site-nav'), mq = matchMedia('(max-width:980px)');
+function closeMenu(focus = false) {
+  menu.setAttribute('aria-expanded','false'); nav.classList.remove('is-open'); document.body.classList.remove('menu-open');
+  $$('main, footer').forEach(el => el.inert = false); nav.inert = mq.matches;
+  menu.setAttribute('aria-label', strings.menu); if (focus) menu.focus();
+}
+closeMenu();
+menu.addEventListener('click', () => {
+  if (menu.getAttribute('aria-expanded') === 'true') { closeMenu(); return; }
+  menu.setAttribute('aria-expanded','true'); menu.setAttribute('aria-label',strings.close);
+  nav.classList.add('is-open'); nav.inert=false; document.body.classList.add('menu-open');
+  $$('main, footer').forEach(el=>el.inert=true);
+});
+mq.addEventListener('change',()=>closeMenu());
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>closeMenu()));
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') { if(menu.getAttribute('aria-expanded')==='true')closeMenu(true); const languages=$('.languages'); if(languages.open){languages.open=false;languages.querySelector('summary').focus();} }
+  if(menu.getAttribute('aria-expanded')!=='true'||e.key!=='Tab')return;
+  const items=[menu,...nav.querySelectorAll('a')]; const i=items.indexOf(document.activeElement);
+  e.preventDefault(); const next=i<0?0:(i+(e.shiftKey?-1:1)+items.length)%items.length; items[next].focus();
+});
+const hero=$('#hero-video');
+if(hero){
+  const button=$('.hero-toggle'), media=$('.hero-media'), reduce=matchMedia('(prefers-reduced-motion:reduce)');
+  let pausedByUser=false,visible=true,loaded=false;
+  const load=()=>{if(!loaded){hero.src=matchMedia('(max-width:980px)').matches?hero.dataset.mobile:hero.dataset.desktop;loaded=true;hero.load();}};
+  const label=()=>{const text=hero.paused?strings.play:strings.pause;button.textContent=hero.paused?'▶':'Ⅱ';button.setAttribute('aria-label',text);button.title=text;};
+  const play=async()=>{load();try{await hero.play();}catch{media.classList.remove('is-playing');}label();};
+  button.hidden=false;label();
+  hero.addEventListener('playing',()=>{media.classList.add('is-playing');label();});hero.addEventListener('pause',label);
+  hero.addEventListener('error',()=>{media.classList.remove('is-playing');loaded=false;label();});
+  button.addEventListener('click',()=>{if(hero.paused){pausedByUser=false;play();}else{pausedByUser=true;hero.pause();}});
+  const auto=()=>!reduce.matches&&!navigator.connection?.saveData&&!pausedByUser;
+  if(auto())play();
+  const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(!visible)hero.pause();else if(auto()&&!document.hidden)play();},{threshold:.05});observer.observe(media);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)hero.pause();else if(visible&&auto())play();});
+  reduce.addEventListener('change',()=>{if(reduce.matches){hero.pause();media.classList.remove('is-playing');}else if(auto()&&visible)play();});
+}
+$$('.film video').forEach(video=>{
+  video.addEventListener('play',()=>$$('.film video').filter(v=>v!==video).forEach(v=>v.pause()));
+  video.addEventListener('error',()=>video.closest('.film').querySelector('.video-status').textContent=strings.videoerror);
+});
+const dialog=$('#lightbox');
+$$('[data-lightbox]').forEach(link=>link.addEventListener('click',event=>{
+  if(!dialog.showModal)return;event.preventDefault();const im=link.querySelector('img');dialog.querySelector('img').src=link.href;dialog.querySelector('img').alt=im.alt;dialog.querySelector('p').textContent=im.alt;dialog.setAttribute('aria-label',im.alt);dialog.showModal();
+}));
+dialog.querySelector('button').addEventListener('click',()=>dialog.close());
+dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();});
+const form=$('#contact-form');
+if(form){
+  const button=form.querySelector('[type=submit]'),status=$('#form-status'),endpoint=window.FC_CONFIG?.formspreeEndpoint||'';let pending=false;
+  const active=isEndpoint(endpoint);button.disabled=false;button.textContent=active?strings.send:strings.check;$('#demo-notice').hidden=active;
+  $$('[data-service]').forEach(link=>link.addEventListener('click',()=>{form.elements.service.value=link.dataset.service;form.elements.service.dispatchEvent(new Event('change'));}));
+  const fields=['name','company','email','service','message'];
+  function clearError(field){field.removeAttribute('aria-invalid');$('#'+field.name+'-error').textContent='';}
+  fields.forEach(name=>['input','change'].forEach(type=>form.elements[name].addEventListener(type,()=>clearError(form.elements[name]))));
+  form.addEventListener('submit',async event=>{
+    event.preventDefault();if(pending)return;
+    const values=Object.fromEntries(new FormData(form));const errors=validate(values);fields.forEach(name=>clearError(form.elements[name]));
+    for(const[name,key]of Object.entries(errors)){form.elements[name].setAttribute('aria-invalid','true');$('#'+name+'-error').textContent=strings.form[key];}
+    if(Object.keys(errors).length){status.textContent=strings.form.invalid;status.dataset.kind='invalid';form.elements[Object.keys(errors)[0]].focus();return;}
+    if(values._gotcha){status.textContent=strings.form.failed;status.dataset.kind='failed';return;}
+    if(!active){status.textContent=strings.form.demo;status.dataset.kind='demo';return;}
+    const data=new FormData(form);data.set('service',form.elements.service.selectedOptions[0].textContent);data.set('_language',document.documentElement.lang);data.set('_subject','FC Montagens — '+form.elements.service.selectedOptions[0].textContent);
+    pending=true;button.disabled=true;status.textContent=strings.form.sending;status.dataset.kind='sending';
+    const kind=await submitRequest(endpoint,data);status.textContent=strings.form[kind];status.dataset.kind=kind;pending=false;button.disabled=false;
   });
-
-  const mobileMenu = window.matchMedia('(max-width: 880px)');
-  const pageContent = [document.querySelector('main'), document.querySelector('footer')];
-  const syncMenuAccess = () => {
-    const open = mobileMenu.matches && nav?.classList.contains('is-open');
-    if (nav) nav.inert = mobileMenu.matches && !open;
-    pageContent.forEach(element => { if (element) element.inert = Boolean(open); });
-  };
-  const closeMenu = (returnFocus = false) => {
-    if (!menuToggle || !nav) return;
-    menuToggle.setAttribute('aria-expanded', 'false');
-    menuToggle.querySelector('.sr-only').textContent = 'Abrir menu';
-    nav.classList.remove('is-open');
-    body.classList.remove('nav-open');
-    syncMenuAccess();
-    if (returnFocus) menuToggle.focus();
-  };
-  syncMenuAccess();
-  mobileMenu.addEventListener('change', () => closeMenu());
-
-  menuToggle?.addEventListener('click', () => {
-    const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
-    menuToggle.setAttribute('aria-expanded', String(!isOpen));
-    menuToggle.querySelector('.sr-only').textContent = isOpen ? 'Abrir menu' : 'Fechar menu';
-    nav.classList.toggle('is-open', !isOpen);
-    body.classList.toggle('nav-open', !isOpen);
-    syncMenuAccess();
-  });
-
-  nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
-    closeMenu();
-    const target = document.querySelector(link.getAttribute('href'));
-    if (target) { target.tabIndex = -1; target.focus({ preventScroll: true }); }
-  }));
-  document.addEventListener('keydown', (event) => {
-    if (!mobileMenu.matches || !nav?.classList.contains('is-open')) return;
-    if (event.key === 'Escape') closeMenu(true);
-    if (event.key === 'Tab') {
-      const items = [menuToggle, ...nav.querySelectorAll('a')];
-      const index = items.indexOf(document.activeElement);
-      if (event.shiftKey && index <= 0) { event.preventDefault(); items.at(-1).focus(); }
-      else if (!event.shiftKey && (index === items.length - 1 || index === -1)) { event.preventDefault(); items[0].focus(); }
-    }
-  });
-
-  const updateScrollUi = () => {
-    header?.classList.toggle('is-scrolled', window.scrollY > 28);
-    backToTop?.classList.toggle('is-visible', window.scrollY > 700);
-    if (backToTop) backToTop.tabIndex = window.scrollY > 700 ? 0 : -1;
-  };
-  updateScrollUi();
-  window.addEventListener('scroll', updateScrollUi, { passive: true });
-
-  const revealItems = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.14 });
-    revealItems.forEach((item) => revealObserver.observe(item));
-  } else {
-    revealItems.forEach((item) => item.classList.add('is-visible'));
-  }
-
-  const filters = document.querySelectorAll('[data-filter]');
-  const projectGrid = document.querySelector('[data-project-grid]');
-  const projects = document.querySelectorAll('[data-category]');
-  filters.forEach((filter) => {
-    filter.addEventListener('click', () => {
-      const category = filter.dataset.filter;
-      filters.forEach((item) => {
-        item.classList.toggle('is-active', item === filter);
-        item.setAttribute('aria-pressed', String(item === filter));
-      });
-      projects.forEach((project) => {
-        const categories = project.dataset.category?.split(' ') || [];
-        project.classList.toggle('is-hidden', category !== 'all' && !categories.includes(category));
-      });
-      const visibleCount = [...projects].filter((project) => !project.classList.contains('is-hidden')).length;
-      projectGrid?.setAttribute('data-visible-count', String(visibleCount));
-    });
-  });
-
-  const dialog = document.querySelector('[data-project-dialog]');
-  const dialogTitle = document.querySelector('[data-dialog-title]');
-  const dialogType = document.querySelector('[data-dialog-type]');
-  const dialogCopy = document.querySelector('[data-dialog-copy]');
-  const dialogImage = document.querySelector('[data-dialog-image]');
-  const dialogClose = document.querySelector('[data-dialog-close]');
-  const dialogContact = document.querySelector('[data-dialog-contact]');
-  projects.forEach((project) => {
-    project.addEventListener('click', () => {
-      if (!dialog?.showModal) return;
-      if (dialogTitle) dialogTitle.textContent = project.dataset.title || '';
-      if (dialogType) dialogType.textContent = project.dataset.type || '';
-      if (dialogCopy) dialogCopy.textContent = project.dataset.copy || '';
-      if (dialogImage) {
-        const sourceImage = project.querySelector('img');
-        dialogImage.src = sourceImage.src;
-        dialogImage.alt = sourceImage.alt;
-        dialogImage.hidden = false;
-      }
-      dialog.showModal();
-    });
-  });
-  dialogClose?.addEventListener('click', () => dialog?.close());
-  dialog?.addEventListener('click', (event) => {
-    if (event.target !== dialog) return;
-    const rect = dialog.getBoundingClientRect();
-    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
-  });
-  dialogContact?.addEventListener('click', () => dialog?.close());
-
-  const showToast = (message) => {
-    if (!toast) return;
-    toast.textContent = message;
-    toast.classList.add('is-visible');
-    window.clearTimeout(toastTimer);
-    toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 4200);
-  };
-
-  const contactForm = document.querySelector('[data-contact-form]');
-  contactForm.querySelector('button[type="submit"]').disabled = false;
-  document.querySelectorAll('.service-card a').forEach((link, index) => {
-    link.addEventListener('click', () => { contactForm.elements.service.selectedIndex = index + 1; });
-  });
-  contactForm?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const requiredFields = [...contactForm.querySelectorAll('[required]')];
-    requiredFields.forEach((field) => field.classList.toggle('is-invalid', !field.checkValidity()));
-    const firstInvalid = requiredFields.find((field) => !field.checkValidity());
-    if (firstInvalid) {
-      firstInvalid.focus();
-      showToast('Verifique os campos obrigatórios antes de continuar.');
-      return;
-    }
-
-    const data = new FormData(contactForm);
-    const cleanLine = (value) => String(value || '').replace(/[\r\n]+/g, ' ').trim();
-    const lineBreaks = (value) => String(value || '').replace(/\r?\n/g, '\r\n').trim();
-    const company = cleanLine(data.get('company'));
-    const subject = cleanLine(`Pedido de contacto — ${data.get('service')}`);
-    const signature = [cleanLine(data.get('name')), company, cleanLine(data.get('email'))].filter(Boolean).join('\r\n');
-    const bodyText = ['Olá,', '', lineBreaks(data.get('message')), '', 'Cumprimentos,', signature].join('\r\n');
-    const mailto = `mailto:geral@fcmontagens.pt?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
-    document.querySelector('[data-form-status]').textContent = 'Pedido preparado. Reveja e envie no seu programa de e-mail. Se não abrir, escreva para geral@fcmontagens.pt; o texto continua neste formulário.';
-    window.location.href = mailto;
-  });
-
-  contactForm?.querySelectorAll('input, select, textarea').forEach((field) => {
-    field.addEventListener('input', () => field.classList.remove('is-invalid'));
-    field.addEventListener('change', () => field.classList.remove('is-invalid'));
-  });
-})();
+}
