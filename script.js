@@ -60,7 +60,7 @@ dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.g
 const form=$('#contact-form');
 if(form){
   const button=form.querySelector('[type=submit]'),status=$('#form-status'),endpoint=window.FC_CONFIG?.formspreeEndpoint||'';let pending=false;
-  const active=isEndpoint(endpoint);button.disabled=false;button.textContent=active?strings.send:strings.check;$('#demo-notice').hidden=active;
+  const active=isEndpoint(endpoint);button.disabled=false;button.querySelector('[data-submit-label]').textContent=active?strings.send:strings.check;$('#demo-notice').hidden=active;
   $$('[data-service]').forEach(link=>link.addEventListener('click',()=>{form.elements.service.value=link.dataset.service;form.elements.service.dispatchEvent(new Event('change'));}));
   const fields=['name','company','email','service','message'];
   function clearError(field){field.removeAttribute('aria-invalid');$('#'+field.name+'-error').textContent='';}
