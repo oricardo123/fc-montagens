@@ -1,6 +1,8 @@
+import { initShowcase } from './showcase.mjs?v=20260919-13';
 import { isEndpoint, validate, submitRequest } from './form.mjs';
 document.documentElement.classList.add('js');
 const strings = JSON.parse(document.querySelector('#page-strings').textContent);
+initShowcase(strings);
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());

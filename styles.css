@@ -36,3 +36,40 @@
 .button>.icon{width:22px;height:22px}
 .text-link>.icon{width:16px;height:16px}
 @media(max-width:600px){.header-cta>.icon{width:18px;height:18px}}
+
+/* Featured films: complete framing, a single player, and visible film choices. */
+.showcase{background:#171b1c}
+.showcase [hidden]{display:none!important}
+.showcase-heading{display:grid;grid-template-columns:1fr 3fr;gap:40px;align-items:start}
+.showcase-heading h2{max-width:20ch}
+.showcase-heading p:not(.eyebrow){max-width:680px;margin-top:22px;color:#bec3c3}
+.showcase-layout{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(280px,1fr);gap:44px;align-items:start}
+.showcase-layout>*{min-width:0}
+.showcase-screen{display:grid;place-items:center}
+.showcase-preview,.showcase-screen>video{width:100%;width:min(100%,calc(70svh * 1.7777778));height:auto;margin:0 auto;border:0}
+.showcase-preview{position:relative}
+.showcase-preview>img{width:100%;height:auto;border:0}
+.showcase[data-format=portrait] .showcase-preview,.showcase[data-format=portrait] .showcase-screen>video{width:min(100%,calc(70svh * .5625))}
+.showcase-start{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:72px;height:72px;padding:0;border:0;border-radius:50%;background:var(--red);color:#fff;box-shadow:0 4px 28px #0005}
+.showcase-start>.icon{width:30px;height:30px;fill:currentColor;stroke:none;margin-left:3px}
+.showcase-start:hover{background:#e02b36}
+.showcase-feature figcaption{display:flex;justify-content:space-between;align-items:start;gap:24px;margin-top:24px}
+.showcase-feature h3{font-size:27px;letter-spacing:-.035em}
+.showcase-feature figcaption p{color:#b9bebe;font-size:14px;margin-top:10px;max-width:560px}
+.showcase-direct{white-space:nowrap;font-size:12px;flex-shrink:0;margin-top:3px}
+.showcase-choices,.showcase-fallback ul{list-style:none;margin:0;padding:0}
+.showcase-choices{display:grid;gap:8px}
+.showcase-choice{display:grid;grid-template-columns:80px minmax(0,1fr) 18px;align-items:center;gap:16px;width:100%;min-height:102px;padding:15px 12px;border:0;background:transparent;color:#aeb6b6;text-align:left}
+.showcase-choice>img{max-width:80px;max-height:72px;width:auto;height:auto;justify-self:center;border:0}
+.showcase-choice strong{display:block;font-family:var(--body);font-weight:600;font-size:15px;line-height:1.45;letter-spacing:0}
+.showcase-duration{display:block;font:12px/1.5 var(--mono);margin-top:8px;color:#9ba4a4}
+.showcase-choice>.icon{width:18px;height:18px}
+.showcase-choice:hover,.showcase-choice[aria-pressed=true]{background:#242b2c;color:#fff}
+.showcase-choice[aria-pressed=true]>.icon{color:#ef4953;fill:currentColor;stroke:none}
+.showcase .video-status{margin-top:16px;color:#ffb6ba;min-height:0}
+.showcase .video-status:empty{display:none}
+.showcase-retry{margin-top:12px;color:var(--text);background:transparent;border:0;padding:8px 0}
+.showcase-fallback li+li{margin-top:20px}
+@media(max-width:1100px){.showcase-layout{gap:28px;grid-template-columns:minmax(0,1.8fr) minmax(260px,1fr)}.showcase-choice{gap:12px;padding:12px 8px}.showcase-feature figcaption{display:block}.showcase-direct{display:inline-flex;margin-top:18px}}
+@media(max-width:980px){.showcase-heading{grid-template-columns:1fr;gap:16px}.showcase-layout{grid-template-columns:1fr;gap:32px}.showcase-choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.showcase-choice{min-height:104px}.showcase-feature figcaption{display:flex}.showcase-direct{margin-top:3px}.showcase-heading h2{max-width:22ch}}
+@media(max-width:600px){.showcase-heading{gap:12px}.showcase-heading h2{font-size:37px}.showcase-heading p:not(.eyebrow){font-size:14px;margin-top:18px}.showcase-feature figcaption{display:block;margin-top:20px}.showcase-feature h3{font-size:25px}.showcase-direct{margin-top:16px}.showcase-choices{grid-template-columns:1fr;gap:6px}.showcase-choice{padding:12px;min-height:94px;grid-template-columns:72px minmax(0,1fr) 18px;gap:16px}.showcase-choice>img{max-width:72px;max-height:64px}.showcase-start{width:60px;height:60px}.showcase-start>.icon{width:25px;height:25px}}
