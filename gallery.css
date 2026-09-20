@@ -96,7 +96,7 @@
 .gallery-anchor{position:absolute;top:0;left:0;width:1px;height:1px;pointer-events:none}
 
 /* Keep the marked vapor visible; protect the lettering locally. */
-.gallery-heading,.gallery-caption,.gallery-toolbar,.gallery-footer{text-shadow:0 1px 3px #080b0c,0 2px 12px #080b0c,0 0 28px #080b0c}
-.gallery-caption{position:relative;isolation:isolate}
-.gallery-caption::before{content:"";position:absolute;z-index:-1;inset:5px -24px -12px;pointer-events:none;background:radial-gradient(ellipse at center,#101415a6 0%,#1014155c 48%,#10141500 75%)}
-.gallery-caption p{color:#e0e5e2}
+.gallery-section .gallery-heading,.gallery-section .gallery-caption,.gallery-section .gallery-toolbar,.gallery-section .gallery-footer{text-shadow:0 1px 3px #080b0c,0 2px 12px #080b0c,0 0 28px #080b0c}
+.gallery-section .gallery-caption{position:relative;isolation:isolate}
+.gallery-section .gallery-caption::before{content:"";position:absolute;z-index:-1;inset:5px -24px -12px;pointer-events:none;background:radial-gradient(ellipse at center,#101415a6 0%,#1014155c 48%,#10141500 75%)}
+.gallery-section .gallery-caption p{color:#e0e5e2}
