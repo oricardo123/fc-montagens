@@ -16,7 +16,7 @@ Activation requires a Formspree form owned by FC Montagens, with its verified re
 
 ## Media
 
-The opening uses silent 55.96-second desktop/mobile encodes. A separate silent team montage appears in the Company section. Reduced motion, data saving and unavailable autoplay retain their posters.
+The opening uses silent 30-second desktop/mobile encodes from the selected edit. A separate silent team montage appears in the Company section. Reduced motion, data saving and unavailable autoplay retain their posters.
 
 The `#videos` section features four on-demand films: Execution, Details, Installation and Other areas of the installation. One player loads only the selected film after interaction, with native controls and fullscreen; the vertical Details film retains its complete frame. Existing sound is preserved. There is no automatic next film. Responsive posters and direct-file links provide an alternative when JavaScript or playback is unavailable.
 
