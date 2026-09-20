@@ -1,4 +1,4 @@
-// Centered gallery: one foreground player; decorative motion follows it.
+// One foreground player. The decorative factory has its own playback lifecycle.
 const section = document.querySelector('#trabalho-em-detalhe');
 const config = JSON.parse(section.querySelector('#gallery-config').textContent);
 const labels = config.labels;
@@ -7,7 +7,7 @@ const viewport = section.querySelector('.gallery-viewport');
 const previousButton = section.querySelector('[data-action=previous]');
 const nextButton = section.querySelector('[data-action=next]');
 const playButton = section.querySelector('[data-action=play]');
-const soundButton = section.querySelector('[data-action=sound]');
+const backgroundButton = section.querySelector('[data-action=background]');
 const fullscreenButton = section.querySelector('[data-action=fullscreen]');
 const retry = section.querySelector('[data-action=retry]');
 const status = section.querySelector('.gallery-status');
@@ -25,19 +25,19 @@ const states = config.films.map((film,index) => {
     button:card.querySelector('[data-select]'),loaded:false,starting:false,playing:false,request:0,
     manuallyPaused:false,manualSession:false,autoplayBlocked:false,ignoredPauseEvents:0,
     playIntent:null,nativeFallback:false,
-    error:false,visible:false};
+    error:false};
 });
-let selected = 0, visible = false, transitioning = false, muted = true;
+let selected = 0, visible = false, viewportVisible = false, transitioning = false;
 let transitionTimer = 0, transitionSerial = 0, fullscreenWasActive = false, swallowClickUntil = 0;
 let touchStart = null;
 let wheelDelta = 0, wheelLastAt = 0, wheelConsumed = false;
-const bg = {near:false,loaded:false,starting:false,playing:false,blocked:false,error:false,request:0};
+const bg = {near:false,visible:false,loaded:false,starting:false,playing:false,hasFrame:false,manuallyPaused:false,blocked:false,error:false,request:0};
 const current = () => states[selected];
 const normalize = index => ((index % states.length) + states.length) % states.length;
 const reduce = () => reducedMotion.matches;
 const saveData = () => Boolean(navigator.connection?.saveData);
 const inFullscreen = () => document.fullscreenElement === rail || Boolean(current().video.webkitDisplayingFullscreen);
-const canResume = state => state.film.ready && state.index===selected && visible && !transitioning && !document.hidden
+const canResume = state => state.film.ready && state.index===selected && visible && !document.hidden
   && !state.manuallyPaused && !state.autoplayBlocked && (state.manualSession || (!reduce() && !saveData()));
 const ringPosition = index => index===selected ? 'center' : index===normalize(selected-1) ? 'left' : 'right';
 
@@ -79,14 +79,9 @@ function sync() {
   });
   previousButton.disabled=nextButton.disabled=false;
   playButton.disabled=fullscreenButton.disabled=!state.film.ready;
-  soundButton.hidden=!state.film.hasAudio;soundButton.disabled=!state.film.ready;
-  controlLabel(playButton,video.paused ? labels.playAll : labels.pauseAll,state.film.title);
+  controlLabel(playButton,video.paused ? labels.play : labels.pause,state.film.title);
   playButton.querySelector('[data-icon=play]').toggleAttribute('hidden',!video.paused);
   playButton.querySelector('[data-icon=pause]').toggleAttribute('hidden',video.paused);
-  controlLabel(soundButton,muted ? labels.soundOn : labels.soundOff,state.film.title);
-  soundButton.setAttribute('aria-pressed',String(!muted));
-  soundButton.querySelector('[data-icon=mute]').toggleAttribute('hidden',!muted);
-  soundButton.querySelector('[data-icon=sound]').toggleAttribute('hidden',muted);
   const full=inFullscreen();
   controlLabel(fullscreenButton,full ? labels.exitFullscreen : labels.fullscreen,state.film.title);
   fullscreenButton.querySelector('[data-icon=fullscreen]').toggleAttribute('hidden',full);
@@ -101,13 +96,12 @@ function sync() {
   retry.hidden=!state.error;
   if(state.error)status.textContent=labels.error;
   rail.dataset.selected=state.film.id;rail.dataset.transitioning=String(transitioning);
-  layout();syncBackground();
+  layout();
 }
 
 function backgroundCanRun() {
-  const state=current();
-  return config.background.ready&&bg.near&&visible&&!document.hidden&&!transitioning&&!reduce()&&!saveData()
-    &&!inFullscreen()&&!state.video.paused&&state.playing&&!state.manuallyPaused&&!state.error&&!bg.blocked&&!bg.error;
+  return config.background.ready&&bg.near&&bg.visible&&!document.hidden&&!reduce()&&!saveData()
+    &&!bg.manuallyPaused&&!bg.blocked&&!bg.error;
 }
 function pauseBackground() {
   ++bg.request;bg.starting=false;bg.playing=false;
@@ -121,6 +115,10 @@ function loadBackground() {
   bg.loaded=true;background.load();
 }
 async function syncBackground() {
+  backdrop.dataset.frame=String(bg.hasFrame&&!reduce()&&!saveData()&&!bg.error);
+  backgroundButton.hidden=reduce()||saveData()||bg.error||!config.background.ready;
+  backgroundButton.textContent=bg.manuallyPaused ? labels.playBackground : labels.pauseBackground;
+  backgroundButton.setAttribute('aria-pressed',String(bg.manuallyPaused));
   if(!backgroundCanRun()){pauseBackground();return;}
   if(bg.starting||(!background.paused&&bg.playing))return;
   loadBackground();const attempt=++bg.request;bg.starting=true;
@@ -135,16 +133,15 @@ async function syncBackground() {
 background.muted=true;background.loop=true;background.controls=false;
 background.addEventListener('playing',()=>{
   if(!backgroundCanRun()){pauseBackground();return;}
-  bg.playing=true;backdrop.dataset.playing='true';
+  bg.playing=true;bg.hasFrame=true;backdrop.dataset.playing='true';backdrop.dataset.frame='true';
 });
 background.addEventListener('pause',()=>{bg.playing=false;backdrop.dataset.playing='false';});
-background.addEventListener('error',()=>{if(background.error){bg.error=true;pauseBackground();}});
-background.addEventListener('waiting',()=>{bg.playing=false;backdrop.dataset.playing='false';});
+background.addEventListener('error',()=>{if(background.error){bg.error=true;backdrop.dataset.frame='false';pauseBackground();}});
+background.addEventListener('waiting',()=>{bg.playing=false;});
 
 function pauseForEnvironment(state) {
   ++state.request;state.starting=false;state.playing=false;state.playIntent=null;
   if(!state.video.paused){++state.ignoredPauseEvents;state.video.pause();}
-  if(state.index===selected)pauseBackground();
 }
 function showError(state) {
   pauseForEnvironment(state);state.autoplayBlocked=true;state.error=true;
@@ -155,21 +152,20 @@ function loadSource(state,force=false) {
   const url=matchMedia('(max-width:980px)').matches ? state.film.mobileUrl : state.film.desktopUrl;
   state.video.poster=state.film.posterUrl;state.video.src=url;state.loaded=true;state.video.load();
 }
-async function play(state=current(),manual=false,reload=false) {
-  if(manual){state.manualSession=true;state.manuallyPaused=false;state.autoplayBlocked=false;}
+async function play(state=current(),manual=false,reload=false,resume=true) {
+  if(manual){state.manualSession=true;if(resume)state.manuallyPaused=false;state.autoplayBlocked=false;}
   if(!canResume(state)||state.starting){sync();return;}
   states.filter(other=>other!==state).forEach(pauseForEnvironment);
   const attempt=++state.request;
   state.starting=true;state.playIntent=manual?'manual':'auto';state.error=false;
   status.textContent='';retry.hidden=true;
-  state.video.muted=state.film.hasAudio?muted:true;
   loadSource(state,reload);state.video.removeAttribute('aria-hidden');state.video.tabIndex=0;sync();
   try{
     await state.video.play();
     if(attempt===state.request&&!canResume(state))pauseForEnvironment(state);
   }catch(error){
     if(attempt!==state.request||error.name==='AbortError')return;
-    if(error.name==='NotAllowedError'){state.autoplayBlocked=true;state.card.dataset.frame='false';pauseBackground();}
+    if(error.name==='NotAllowedError'){state.autoplayBlocked=true;state.card.dataset.frame='false';}
     else showError(state);
   }finally{if(attempt===state.request){state.starting=false;state.playIntent=null;sync();}}
 }
@@ -186,12 +182,14 @@ function select(index,manualPlay=false) {
   if(index===selected){if(manualPlay)play(current(),true,Boolean(current().video.error));return;}
   const serial=++transitionSerial;clearTimeout(transitionTimer);
   pauseForEnvironment(current());current().card.dataset.frame='false';
-  selected=index;visible=current().visible||inFullscreen();status.textContent='';
+  selected=index;status.textContent='';
   transitioning=!reduce()&&!inFullscreen();sync();
+  // Keep play() inside the actual click/key gesture, including on Safari.
+  // The card may animate while its selected film starts; scenery is unaffected.
+  play(current(),manualPlay,Boolean(current().video.error),false);
   const finish=()=>{
     if(serial!==transitionSerial)return;
-    transitioning=false;visible=current().visible||inFullscreen();sync();
-    play(current(),manualPlay,Boolean(current().video.error));
+    transitioning=false;sync();
   };
   if(transitioning)transitionTimer=setTimeout(finish,320);else finish();
 }
@@ -212,19 +210,16 @@ async function toggleFullscreen() {
   try{await rail.requestFullscreen();}catch{fullscreenFallback();}
 }
 
-previousButton.addEventListener('click',()=>select(selected-1));
-nextButton.addEventListener('click',()=>select(selected+1));
+previousButton.addEventListener('click',()=>select(selected-1,true));
+nextButton.addEventListener('click',()=>select(selected+1,true));
 playButton.addEventListener('click',togglePlay);
-soundButton.addEventListener('click',()=>{
-  muted=!muted;current().video.muted=muted;
-  if(!muted&&!current().video.paused)current().manualSession=true;sync();
-});
+backgroundButton.addEventListener('click',()=>{bg.manuallyPaused=!bg.manuallyPaused;bg.blocked=false;syncBackground();});
 fullscreenButton.addEventListener('click',toggleFullscreen);
 retry.addEventListener('click',()=>{pauseForEnvironment(current());play(current(),true,true);playButton.focus({preventScroll:true});});
 viewport.addEventListener('keydown',event=>{
   if(event.target instanceof HTMLVideoElement||event.altKey||event.ctrlKey||event.metaKey)return;
   const next=event.key==='ArrowRight'?selected+1:event.key==='ArrowLeft'?selected-1:event.key==='Home'?0:event.key==='End'?states.length-1:null;
-  if(next===null)return;event.preventDefault();select(next);
+  if(next===null)return;event.preventDefault();select(next,true);
 });
 viewport.addEventListener('pointerdown',event=>{
   if(event.pointerType==='mouse'||event.button!==0||inFullscreen())return;
@@ -234,7 +229,7 @@ viewport.addEventListener('pointerup',event=>{
   if(!touchStart||touchStart.id!==event.pointerId)return;
   const dx=event.clientX-touchStart.x,dy=event.clientY-touchStart.y;touchStart=null;
   if(Math.abs(dx)<42||Math.abs(dx)<Math.abs(dy)*1.3)return;
-  swallowClickUntil=performance.now()+400;select(selected+(dx<0?1:-1));
+  swallowClickUntil=performance.now()+400;select(selected+(dx<0?1:-1),true);
 });
 viewport.addEventListener('pointercancel',()=>{touchStart=null;});
 viewport.addEventListener('click',event=>{if(performance.now()<swallowClickUntil){event.preventDefault();event.stopPropagation();}},true);
@@ -255,17 +250,17 @@ viewport.addEventListener('wheel',event=>{
 states.forEach(state=>{
   const video=state.video;
   state.button.addEventListener('click',()=>{
-    const wasActive=state.index===selected;select(state.index,wasActive);
+    const wasActive=state.index===selected;select(state.index,true);
     if(wasActive)playButton.focus({preventScroll:true});
   });
-  video.muted=true;video.loop=true;video.controls=false;
+  video.muted=!state.film.hasAudio;video.loop=true;video.controls=false;
   video.addEventListener('play',()=>{
-    if(video.paused||state.index!==selected||!visible||transitioning||document.hidden){if(!video.paused)pauseForEnvironment(state);sync();return;}
+    if(video.paused||state.index!==selected||!visible||document.hidden){if(!video.paused)pauseForEnvironment(state);sync();return;}
     if(state.playIntent!=='auto'){state.manualSession=true;state.manuallyPaused=false;}
     states.filter(other=>other!==state).forEach(pauseForEnvironment);sync();
   });
   video.addEventListener('playing',()=>{
-    if(state.index!==selected||!visible||transitioning||document.hidden){pauseForEnvironment(state);return;}
+    if(state.index!==selected||!visible||document.hidden){pauseForEnvironment(state);return;}
     state.playing=true;state.card.dataset.frame='true';state.autoplayBlocked=false;state.error=false;status.textContent='';sync();
   });
   video.addEventListener('pause',()=>{
@@ -274,36 +269,42 @@ states.forEach(state=>{
     else if(state.index===selected&&visible&&!transitioning&&!document.hidden&&!state.starting&&!video.ended&&!video.error&&!state.autoplayBlocked)state.manuallyPaused=true;
     sync();
   });
-  video.addEventListener('waiting',()=>{state.playing=false;if(state.index===selected)pauseBackground();});
+  video.addEventListener('waiting',()=>{state.playing=false;});
   video.addEventListener('ended',()=>{state.playing=false;state.manuallyPaused=true;sync();});
   video.addEventListener('error',()=>{if(video.error)showError(state);});
-  video.addEventListener('volumechange',()=>{if(state.index===selected&&state.film.hasAudio)muted=video.muted;sync();});
   video.addEventListener('keydown',event=>{if(event.key===' '&&!video.controls){event.preventDefault();togglePlay();}});
-  video.addEventListener('webkitbeginfullscreen',()=>{pauseBackground();sync();});
+  video.addEventListener('webkitbeginfullscreen',sync);
   video.addEventListener('webkitendfullscreen',()=>{video.controls=state.nativeFallback;sync();});
 });
 document.addEventListener('fullscreenchange',()=>{
   const full=inFullscreen();
-  if(full){visible=true;transitioning=false;++transitionSerial;clearTimeout(transitionTimer);pauseBackground();}
-  else if(fullscreenWasActive)visible=current().visible;
+  if(full){visible=true;transitioning=false;++transitionSerial;clearTimeout(transitionTimer);}
+  else if(fullscreenWasActive)visible=viewportVisible;
   fullscreenWasActive=full;layout();sync();
 });
-document.addEventListener('visibilitychange',()=>{if(document.hidden){states.forEach(pauseForEnvironment);pauseBackground();sync();}else play();});
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){states.forEach(pauseForEnvironment);pauseBackground();sync();}else play();
+  syncBackground();
+});
 const preferenceChange=()=>{
   const state=current();
   if((reduce()||saveData())&&!state.manualSession){pauseForEnvironment(state);state.card.dataset.frame='false';sync();}
   else play();
-  if(reduce()||saveData())pauseBackground();else{loadBackground();syncBackground();}
+  loadBackground();syncBackground();
   layout();
 };
 reducedMotion.addEventListener('change',preferenceChange);
 navigator.connection?.addEventListener?.('change',preferenceChange);
 const observer=new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{const state=states.find(item=>item.screen===entry.target);state.visible=entry.isIntersecting&&entry.intersectionRatio>=.25;});
-  visible=inFullscreen()||current().visible;
-  if(visible)play();else{states.forEach(pauseForEnvironment);pauseBackground();sync();}
+  viewportVisible=entries[0].isIntersecting&&entries[0].intersectionRatio>=.25;
+  visible=inFullscreen()||viewportVisible;
+  if(visible)play();else{states.forEach(pauseForEnvironment);sync();}
 },{threshold:[0,.25]});
-states.forEach(state=>observer.observe(state.screen));
+observer.observe(viewport);
+const backgroundObserver=new IntersectionObserver(entries=>{
+  bg.visible=entries[0].isIntersecting;syncBackground();
+},{threshold:0});
+backgroundObserver.observe(section);
 const nearObserver=new IntersectionObserver(entries=>{
   bg.near=entries[0].isIntersecting;if(bg.near){loadBackground();syncBackground();}else pauseBackground();
 },{rootMargin:'300px 0px'});

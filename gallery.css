@@ -5,8 +5,8 @@
 .gallery-factory{position:absolute;left:50%;top:50%;width:min(100cqw,150cqh);aspect-ratio:3/2;transform:translate(-50%,-50%);opacity:.62;mask-image:linear-gradient(0deg,transparent 0%,#000 14%,#000 85%,transparent 100%)}
 .gallery-factory img,.gallery-factory video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border:0}
 .gallery-factory video{opacity:0}
-.gallery-backdrop[data-playing=true] video{opacity:1}
-.gallery-backdrop[data-playing=true] .factory-photo{opacity:0}
+.gallery-backdrop[data-frame=true] video{opacity:1}
+.gallery-backdrop[data-frame=true] .factory-photo{opacity:0}
 .gallery-backdrop-shade{position:absolute;inset:0;background:linear-gradient(90deg,#171b1c 0%,#171b1c18 20%,#171b1c18 80%,#171b1c 100%)}
 .gallery-section .gallery-heading{display:block;padding:0;border:0;text-align:center;max-width:950px;margin:0 auto 42px}
 .gallery-section .gallery-heading .eyebrow{margin-bottom:22px;color:#c4ccca}
@@ -80,8 +80,8 @@
  .gallery-toolbar{gap:18px;align-items:center;margin-top:10px;flex-wrap:wrap}
  .gallery-control-group{gap:15px;flex-wrap:nowrap}
  .gallery-control{font-size:11px;gap:6px}
- .gallery-control[data-action=fullscreen] .gallery-control-label,.gallery-control[data-action=sound] .gallery-control-label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
- .gallery-control[data-action=sound],.gallery-control[data-action=fullscreen]{min-width:36px}
+ .gallery-control[data-action=fullscreen] .gallery-control-label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+ .gallery-control[data-action=fullscreen]{min-width:36px}
  .gallery-position{font-size:10px}
  .gallery-footer{flex-wrap:wrap;gap:6px;margin-top:4px}
  .gallery-direct{margin-top:6px}
@@ -100,3 +100,6 @@
 .gallery-section .gallery-caption{position:relative;isolation:isolate}
 .gallery-section .gallery-caption::before{content:"";position:absolute;z-index:-1;inset:5px -24px -12px;pointer-events:none;background:radial-gradient(ellipse at center,#101415a6 0%,#1014155c 48%,#10141500 75%)}
 .gallery-section .gallery-caption p{color:#e0e5e2}
+
+.gallery-section .gallery-background-control{padding:8px 0;min-height:36px;flex-shrink:0;font-size:11px;line-height:1.5;color:#c4ccca;background:transparent;border:0;text-decoration:underline;text-underline-offset:4px}
+.gallery-section .gallery-background-control:hover{color:#fff}
