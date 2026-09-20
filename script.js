@@ -12,7 +12,24 @@ if (header && document.body.classList.contains('header-overlay')) {
   window.addEventListener('pageshow', syncHeader);
 }
 $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
-$$('[data-language]').forEach(link => link.addEventListener('click', () => { link.hash = location.hash; }));
+// A URL fragment can be stale after manual scrolling. Translate the section
+// currently being read instead, keeping the opening explicitly at the top.
+const languageSections = $$('main > section[id]');
+function currentLanguageSection() {
+  const headerBottom = header?.getBoundingClientRect().bottom || 0;
+  const readingLine = headerBottom + Math.max(0, innerHeight - headerBottom) / 3;
+  let current = languageSections[0];
+  for (const section of languageSections) {
+    if (section.getBoundingClientRect().top > readingLine) break;
+    current = section;
+  }
+  return current ? '#' + current.id : '';
+}
+$$('[data-language]').forEach(link => {
+  const keepSection = () => { link.hash = currentLanguageSection(); };
+  link.addEventListener('click', keepSection);
+  link.addEventListener('auxclick', keepSection);
+});
 const menu = $('.menu-toggle'), nav = $('#site-nav'), mq = matchMedia('(max-width:980px)');
 function closeMenu(focus = false) {
   menu.setAttribute('aria-expanded','false'); nav.classList.remove('is-open'); document.body.classList.remove('menu-open');
