@@ -1,4 +1,4 @@
-export const isEndpoint = value => /^https:\/\/formspree\.io\/f\/[a-zA-Z0-9]+$/.test(value || '');
+export const isEndpoint = value => typeof value === 'string' && value === value.trim() && /^https:\/\/formspree\.io\/f\/[a-zA-Z0-9]+$/.test(value);
 export function validate(values) {
   const errors = {};
   const limits = { name: 120, company: 160, email: 180, message: 2400 };
@@ -15,7 +15,7 @@ export async function submitRequest(endpoint, data, { fetcher = fetch, timeout =
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
   try {
-    const response = await fetcher(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' }, signal: controller.signal });
+    const response = await fetcher(endpoint, { method: 'POST', body: data, credentials: 'omit', redirect: 'error', referrerPolicy: 'no-referrer', headers: { Accept: 'application/json' }, signal: controller.signal });
     if (response.status === 429) return 'limit';
     if (!response.ok) return 'failed';
     const body = await response.json();

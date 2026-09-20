@@ -1,0 +1,4 @@
+# Deploy this file at the origin root /robots.txt. A copy in a subdirectory does not control crawlers.
+User-agent: *
+Allow: /
+# Demo HTML uses noindex, follow. Crawling must remain allowed so the directive can be read.

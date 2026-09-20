@@ -15,7 +15,7 @@
 .gallery-row{position:relative}
 .gallery-viewport{position:relative;touch-action:pan-y pinch-zoom;outline-offset:8px}
 .gallery-track{position:relative}
-.gallery-card{width:min(100%,900px);margin:0 auto 32px}
+.gallery-card{--film-ratio:1.7777777778;width:min(100%,900px);margin:0 auto 32px}
 .gallery-screen{position:relative;width:100%;aspect-ratio:var(--film-ratio);background:transparent;isolation:isolate}
 .gallery-poster,.gallery-screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border:0;display:block}
 .gallery-screen video{opacity:0}
@@ -103,3 +103,5 @@
 
 .gallery-section .gallery-background-control{padding:8px 0;min-height:36px;flex-shrink:0;font-size:11px;line-height:1.5;color:#c4ccca;background:transparent;border:0;text-decoration:underline;text-underline-offset:4px}
 .gallery-section .gallery-background-control:hover{color:#fff}
+
+.gallery-card[data-film=details]{--film-ratio:.5625}

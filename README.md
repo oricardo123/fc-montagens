@@ -20,10 +20,18 @@ The opening uses silent 30-second desktop/mobile encodes from the selected edit.
 
 The `#trabalho-em-detalhe` gallery features three films: Execution (25.4 s), vertical Details (16.28 s) and Drone views of the installation (18.2 s). The selected video is centered at normal brightness and retains its complete frame; the adjacent posters are smaller and dimmed. SVG arrows, keyboard navigation, side-card selection and horizontal gestures rotate the gallery manually. The old `#videos` anchor remains compatible.
 
-Only the selected foreground film plays, initially muted and looping while visible. Optional sound preserves the recorded audio in Execution and Details; the drone sources are silent. There is no automatic advance. Pause controls the selected film and the silent 12-second animated factory background together. The background is an institutional illustration with fixed architecture and animated vapor. Reduced motion, data saving or playback failure retain a photograph; direct-file links and script-free posters remain available.
+Only the selected foreground film plays, with its original sound enabled where present, and loops while visible. Browsers can block audible autoplay; the Play action starts it after a visitor gesture. Execution and Details contain sound; the drone sources are silent. There is no automatic advance or custom sound switch. The selected-film pause and the silent 12-second animated factory background are independent, with a separate background pause. The background is an institutional illustration with fixed architecture and animated vapor. Reduced motion, data saving or playback failure retain a photograph; direct-file links and script-free posters remain available.
 
 Film metadata and translated controls are embedded as `gallery-config` in each homepage. `gallery.mjs` manages playback, selection and responsive layout; `gallery.css` keeps the foreground separate from the scenery. Update media dimensions, duration, posters and all language versions together when replacing a film. New `gallery-` assets preserve the prior video files. Camera originals, editable projects and private production records are not included.
 
 ## Publication
 
 Publish this repository to its existing GitHub Pages destination. Moving to the company domain requires the owner's DNS/domain access; this demonstration does not alter `fcmontagens.com`.
+
+## Security and search preparation
+
+The demo HTML uses `noindex,follow`; this is search-engine guidance, not access control. Production exports must use their own canonical URL, language alternates, structured data, robots and sitemap. Do not copy the demo unchanged to the company domain.
+
+Local fonts and licence files are included; no Google Fonts runtime requests. A restrictive CSP and referrer policy are declared in each HTML page. The final host should also apply CSP `frame-ancestors`, `X-Frame-Options`, `X-Content-Type-Options`, a Permissions Policy and HTTPS enforcement as HTTP headers. Meta policies cannot provide every response-header protection.
+
+Form requests accept only the configured HTTPS Formspree endpoint, omit credentials/referrer and reject redirects. Frontend validation and a honeypot do not replace provider spam/rate-limit settings. Keep the endpoint empty until FC owns and verifies the receiving form. No analytics, advertising, payment or login system is included.

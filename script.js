@@ -1,4 +1,4 @@
-import { isEndpoint, validate, submitRequest } from './form.mjs';
+import { isEndpoint, validate, submitRequest } from './form.mjs?v=20260920-23';
 document.documentElement.classList.add('js');
 const strings = JSON.parse(document.querySelector('#page-strings').textContent);
 const $ = selector => document.querySelector(selector);
