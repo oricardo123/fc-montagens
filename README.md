@@ -18,9 +18,11 @@ Activation requires a Formspree form owned by FC Montagens, with its verified re
 
 The opening uses silent 30-second desktop/mobile encodes from the selected edit. A separate silent team montage appears in the Company section. Reduced motion, data saving and unavailable autoplay retain their posters.
 
-The `#videos` section features four on-demand films: Execution, Details, Installation and Other areas of the installation. One player loads only the selected film after interaction, with native controls and fullscreen; the vertical Details film retains its complete frame. Existing sound is preserved. There is no automatic next film. Responsive posters and direct-file links provide an alternative when JavaScript or playback is unavailable.
+The `#trabalho-em-detalhe` gallery features three films: Execution (25.4 s), vertical Details (16.28 s) and Drone views of the installation (18.2 s). The selected video is centered at normal brightness and retains its complete frame; the adjacent posters are smaller and dimmed. SVG arrows, keyboard navigation, side-card selection and horizontal gestures rotate the gallery manually. The old `#videos` anchor remains compatible.
 
-Film metadata is embedded as `showcase-data` in each homepage; localized labels and descriptions accompany the shared media paths. Update dimensions, duration, posters and all language versions together when replacing a film. Existing video assets and former platform assets are preserved, while the platform presentation remains withdrawn. No camera originals or private project records are included.
+Only the selected foreground film plays, initially muted and looping while visible. Optional sound preserves the recorded audio in Execution and Details; the drone sources are silent. There is no automatic advance. Pause controls the selected film and the silent 12-second animated factory background together. The background is an institutional illustration with fixed architecture and animated vapor. Reduced motion, data saving or playback failure retain a photograph; direct-file links and script-free posters remain available.
+
+Film metadata and translated controls are embedded as `gallery-config` in each homepage. `gallery.mjs` manages playback, selection and responsive layout; `gallery.css` keeps the foreground separate from the scenery. Update media dimensions, duration, posters and all language versions together when replacing a film. New `gallery-` assets preserve the prior video files. Camera originals, editable projects and private production records are not included.
 
 ## Publication
 
