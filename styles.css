@@ -73,3 +73,7 @@
 @media(max-width:1100px){.showcase-layout{gap:28px;grid-template-columns:minmax(0,1.8fr) minmax(260px,1fr)}.showcase-choice{gap:12px;padding:12px 8px}.showcase-feature figcaption{display:block}.showcase-direct{display:inline-flex;margin-top:18px}}
 @media(max-width:980px){.showcase-heading{grid-template-columns:1fr;gap:16px}.showcase-layout{grid-template-columns:1fr;gap:32px}.showcase-choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.showcase-choice{min-height:104px}.showcase-feature figcaption{display:flex}.showcase-direct{margin-top:3px}.showcase-heading h2{max-width:22ch}}
 @media(max-width:600px){.showcase-heading{gap:12px}.showcase-heading h2{font-size:37px}.showcase-heading p:not(.eyebrow){font-size:14px;margin-top:18px}.showcase-feature figcaption{display:block;margin-top:20px}.showcase-feature h3{font-size:25px}.showcase-direct{margin-top:16px}.showcase-choices{grid-template-columns:1fr;gap:6px}.showcase-choice{padding:12px;min-height:94px;grid-template-columns:72px minmax(0,1fr) 18px;gap:16px}.showcase-choice>img{max-width:72px;max-height:64px}.showcase-start{width:60px;height:60px}.showcase-start>.icon{width:25px;height:25px}}
+
+/* Give the wider pipework photograph more room without cropping the work images. */
+@media(min-width:981px){#trabalhos .work-grid{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,3fr)}}
+@media(min-width:601px) and (max-width:980px){#trabalhos .work-grid>.work-card:first-child{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}}
