@@ -3,6 +3,14 @@ document.documentElement.classList.add('js');
 const strings = JSON.parse(document.querySelector('#page-strings').textContent);
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
+// Keep the opening film behind the header; use a solid header after scrolling.
+const header = $('.site-header');
+if (header && document.body.classList.contains('header-overlay')) {
+  const syncHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 16);
+  syncHeader();
+  window.addEventListener('scroll', syncHeader, { passive: true });
+  window.addEventListener('pageshow', syncHeader);
+}
 $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 $$('[data-language]').forEach(link => link.addEventListener('click', () => { link.hash = location.hash; }));
 const menu = $('.menu-toggle'), nav = $('#site-nav'), mq = matchMedia('(max-width:980px)');

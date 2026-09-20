@@ -81,3 +81,13 @@
 @media screen{.site-header{padding-block:8px}.site-header .brand{width:80px}}
 @media screen and (max-width:980px){.site-header{padding-block:10px}.site-header .brand{width:64px}}
 @media screen and (max-width:600px){.site-header .brand{width:58px}}
+
+/* The same full-frame hero sits behind the fixed header at the top. */
+@media screen{
+  .header-overlay .site-header{position:fixed;inset:0 0 auto;transition:background-color .22s ease,border-color .22s ease}
+  .header-overlay .site-header::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(6,9,10,.65),rgba(6,9,10,.45));opacity:0;transition:opacity .22s ease}
+  .js .header-overlay .site-header:not(.is-scrolled){background:transparent;border-bottom-color:transparent}
+  .js .header-overlay .site-header:not(.is-scrolled)::before{opacity:1}
+  .js .header-overlay.menu-open .site-header{background:var(--ink);border-bottom-color:#ffffff12}
+  .js .header-overlay.menu-open .site-header::before{opacity:0}
+}
