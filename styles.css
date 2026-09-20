@@ -76,3 +76,8 @@
 /* Give the wider pipework photograph more room without cropping the work images. */
 @media(min-width:981px){#trabalhos .work-grid{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,3fr)}}
 @media(min-width:601px) and (max-width:980px){#trabalhos .work-grid>.work-card:first-child{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}}
+
+/* Give the header logo more presence without changing the header height. */
+@media screen{.site-header{padding-block:8px}.site-header .brand{width:80px}}
+@media screen and (max-width:980px){.site-header{padding-block:10px}.site-header .brand{width:64px}}
+@media screen and (max-width:600px){.site-header .brand{width:58px}}
