@@ -91,3 +91,7 @@
 
 /* Hide the still beneath a playing film, including fractional edge pixels. */
 .hero-media.is-playing .hero-poster{opacity:0}
+
+/* Align the work introduction with the photographs after removing its label. */
+.section-head--work{display:block}
+.section-head--work p:not(.eyebrow){max-width:680px}
