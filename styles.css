@@ -95,3 +95,7 @@
 /* Align the work introduction with the photographs after removing its label. */
 .section-head--work{display:block}
 .section-head--work p:not(.eyebrow){max-width:680px}
+
+/* Reserve the fixed header's height above the full video. */
+@media screen and (max-width:980px){.header-overlay .hero{padding-top:82px}.hero-actions>.button{display:none}}
+@media screen and (max-width:600px){.header-overlay .hero{padding-top:76px}}
