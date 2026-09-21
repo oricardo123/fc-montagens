@@ -3,3 +3,9 @@
 #trabalhos .gallery>figure>a>img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;border:0}
 #trabalhos .gallery>figure>a>img.gallery-image--weld{object-position:50% 75%}
 #trabalhos .gallery>figure>a>img.gallery-image--fabrication{object-position:100% 50%}
+
+/* Match the execution thumbnails on mobile; retain the catalogue layout above 600px. */
+@media(max-width:600px){
+  #trabalhos .catalogue-gallery figure>a{display:block;aspect-ratio:1;overflow:clip}
+  #trabalhos .catalogue-gallery figure>a>img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;border:0}
+}
