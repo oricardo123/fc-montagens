@@ -100,6 +100,6 @@
 @media screen and (max-width:980px){.header-overlay .hero{padding-top:82px}.hero-actions>.button{display:none}}
 @media screen and (max-width:600px){.header-overlay .hero{padding-top:76px}}
 
-/* Direct contact details replace the enquiry form. */
-.contact-direct{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);align-items:start}.contact-direct>.contact-list{margin:0}.contact-direct>.lead{max-width:440px}
-@media(max-width:600px){.contact-direct{grid-template-columns:minmax(0,1fr);gap:28px}.contact-direct>.contact-list{margin:0}}
+/* Direct contacts: prominent email and telephone, practical details below. */
+.contact-direct{display:block}.contact-direct>.lead{max-width:660px;margin-bottom:42px}.contact-direct>.contact-list{margin:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:34px 44px}.contact-direct .contact-list>div{display:block;grid-column:span 2;padding:22px 0 0}.contact-direct .contact-list>div:nth-child(-n+2){grid-column:span 3}.contact-direct .contact-list dt{font:11px var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}.contact-direct .contact-list dd{font-size:15px;line-height:1.8}.contact-direct .contact-list>div:nth-child(-n+2) a{font-family:var(--display);font-size:clamp(23px,2.4vw,36px);line-height:1.5;letter-spacing:-.035em}.contact-direct .contact-list a{min-height:44px;display:flex;align-items:center}
+@media(max-width:600px){.contact-direct>.lead{margin-bottom:28px}.contact-direct>.contact-list{grid-template-columns:minmax(0,1fr);gap:22px}.contact-direct .contact-list>div,.contact-direct .contact-list>div:nth-child(-n+2){grid-column:auto}.contact-direct .contact-list dt{margin-bottom:10px}.contact-direct .contact-list>div:nth-child(-n+2) a{font-size:clamp(22px,6.1vw,28px)}}
