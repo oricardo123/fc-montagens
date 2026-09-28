@@ -1,4 +1,3 @@
-import { isEndpoint, validate, submitRequest } from './form.mjs?v=20260920-23';
 document.documentElement.classList.add('js');
 const strings = JSON.parse(document.querySelector('#page-strings').textContent);
 const $ = selector => document.querySelector(selector);
@@ -82,23 +81,3 @@ $$('[data-lightbox]').forEach(link=>link.addEventListener('click',event=>{
 }));
 dialog.querySelector('button').addEventListener('click',()=>dialog.close());
 dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();});
-const form=$('#contact-form');
-if(form){
-  const button=form.querySelector('[type=submit]'),status=$('#form-status'),endpoint=window.FC_CONFIG?.formspreeEndpoint||'';let pending=false;
-  const active=isEndpoint(endpoint);button.disabled=false;button.querySelector('[data-submit-label]').textContent=active?strings.send:strings.check;$('#demo-notice').hidden=active;
-  $$('[data-service]').forEach(link=>link.addEventListener('click',()=>{form.elements.service.value=link.dataset.service;form.elements.service.dispatchEvent(new Event('change'));}));
-  const fields=['name','company','email','service','message'];
-  function clearError(field){field.removeAttribute('aria-invalid');$('#'+field.name+'-error').textContent='';}
-  fields.forEach(name=>['input','change'].forEach(type=>form.elements[name].addEventListener(type,()=>clearError(form.elements[name]))));
-  form.addEventListener('submit',async event=>{
-    event.preventDefault();if(pending)return;
-    const values=Object.fromEntries(new FormData(form));const errors=validate(values);fields.forEach(name=>clearError(form.elements[name]));
-    for(const[name,key]of Object.entries(errors)){form.elements[name].setAttribute('aria-invalid','true');$('#'+name+'-error').textContent=strings.form[key];}
-    if(Object.keys(errors).length){status.textContent=strings.form.invalid;status.dataset.kind='invalid';form.elements[Object.keys(errors)[0]].focus();return;}
-    if(values._gotcha){status.textContent=strings.form.failed;status.dataset.kind='failed';return;}
-    if(!active){status.textContent=strings.form.demo;status.dataset.kind='demo';return;}
-    const data=new FormData(form);data.set('service',form.elements.service.selectedOptions[0].textContent);data.set('_language',document.documentElement.lang);data.set('_subject','FC Montagens — '+form.elements.service.selectedOptions[0].textContent);
-    pending=true;button.disabled=true;status.textContent=strings.form.sending;status.dataset.kind='sending';
-    const kind=await submitRequest(endpoint,data);status.textContent=strings.form[kind];status.dataset.kind=kind;pending=false;button.disabled=false;
-  });
-}

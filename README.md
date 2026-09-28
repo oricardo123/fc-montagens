@@ -35,3 +35,6 @@ The demo HTML uses `noindex,follow`; this is search-engine guidance, not access 
 Local fonts and licence files are included; no Google Fonts runtime requests. A restrictive CSP and referrer policy are declared in each HTML page. The final host should also apply CSP `frame-ancestors`, `X-Frame-Options`, `X-Content-Type-Options`, a Permissions Policy and HTTPS enforcement as HTTP headers. Meta policies cannot provide every response-header protection.
 
 Form requests accept only the configured HTTPS Formspree endpoint, omit credentials/referrer and reject redirects. Frontend validation and a honeypot do not replace provider spam/rate-limit settings. Keep the endpoint empty until FC owns and verifies the receiving form. No analytics, advertising, payment or login system is included.
+
+
+Current contact flow (28 September 2026): direct email and telephone links only. The enquiry form and Formspree integration have been removed in all four languages. Earlier form setup instructions are obsolete.

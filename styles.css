@@ -99,3 +99,7 @@
 /* Reserve the fixed header's height above the full video. */
 @media screen and (max-width:980px){.header-overlay .hero{padding-top:82px}.hero-actions>.button{display:none}}
 @media screen and (max-width:600px){.header-overlay .hero{padding-top:76px}}
+
+/* Direct contact details replace the enquiry form. */
+.contact-direct{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);align-items:start}.contact-direct>.contact-list{margin:0}.contact-direct>.lead{max-width:440px}
+@media(max-width:600px){.contact-direct{grid-template-columns:minmax(0,1fr);gap:28px}.contact-direct>.contact-list{margin:0}}
