@@ -56,3 +56,64 @@ $$('[data-lightbox]').forEach(link=>link.addEventListener('click',event=>{
 }));
 dialog.querySelector('button').addEventListener('click',()=>dialog.close());
 dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();});
+
+// Independent decorative animation: silent, lazy-loaded, with a still fallback.
+const factory = $('[data-factory-animation]');
+if (factory) {
+  const frame = factory.parentElement;
+  const toggle = $('.factory-toggle');
+  const reduced = matchMedia('(prefers-reduced-motion:reduce)');
+  const connection = navigator.connection;
+  let visible = false, loaded = false, starting = false;
+  let manuallyPaused = false, blocked = false, failed = false;
+  const stillPreferred = () => reduced.matches || connection?.saveData;
+  const canRun = () => visible && !document.hidden && !stillPreferred() && !manuallyPaused && !failed;
+  const updateControl = () => {
+    toggle.hidden = Boolean(stillPreferred() || failed);
+    toggle.textContent = manuallyPaused || blocked ? toggle.dataset.play : toggle.dataset.pause;
+  };
+  const syncFactory = async () => {
+    updateControl();
+    if (!canRun()) {
+      factory.pause();
+      if (stillPreferred() || failed) frame.classList.remove('is-playing');
+      return;
+    }
+    if (starting || !factory.paused || blocked) return;
+    starting = true;
+    if (!loaded) {
+      factory.src = matchMedia('(max-width:980px)').matches ? factory.dataset.mobile : factory.dataset.desktop;
+      loaded = true;
+      factory.load();
+    }
+    try {
+      await factory.play();
+      if (!canRun()) factory.pause();
+    } catch {
+      // A blocked autoplay request leaves the original photograph visible.
+      if (canRun()) blocked = true;
+    } finally {
+      starting = false;
+      updateControl();
+    }
+  };
+  factory.muted = true;
+  factory.addEventListener('playing', () => {
+    if (!canRun()) { factory.pause(); return; }
+    frame.classList.add('is-playing');
+  });
+  factory.addEventListener('error', () => { failed = true; syncFactory(); });
+  toggle.addEventListener('click', () => {
+    manuallyPaused = blocked ? false : !manuallyPaused;
+    blocked = false;
+    syncFactory();
+  });
+  new IntersectionObserver(entries => {
+    visible = entries[0].isIntersecting;
+    syncFactory();
+  }, { threshold: 0.05 }).observe(frame);
+  document.addEventListener('visibilitychange', syncFactory);
+  reduced.addEventListener('change', syncFactory);
+  connection?.addEventListener('change', syncFactory);
+  updateControl();
+}
